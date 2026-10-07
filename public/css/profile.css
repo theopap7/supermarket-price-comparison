@@ -16,9 +16,7 @@ body{
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: linear-gradient(rgba(3, 3, 3, 0.75),rgba(73, 59, 59, 0.75)),url('../img/profile.jpg');
-  background-size: cover;
-  background-position: center;
+  background: linear-gradient(135deg, #1f2a30 0%, #2f3e46 55%, #1b4d47 100%);
   font-family: 'roboto', sans-serif;
 }
 

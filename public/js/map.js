@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    const hasOfferIcon = L.icon({ iconUrl: '/img/discount.png', iconSize: [32, 32] });
-    const noOfferIcon = L.icon({ iconUrl: '/img/nodiscount.png', iconSize: [32, 32] });
+    const hasOfferIcon = L.icon({ iconUrl: '/img/discount.svg', iconSize: [32, 32] });
+    const noOfferIcon = L.icon({ iconUrl: '/img/nodiscount.svg', iconSize: [32, 32] });
     const markersLayer = L.layerGroup().addTo(map);
     const userLocationMarker = L.circle(PATRAS, {
         color: 'blue',

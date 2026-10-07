@@ -200,4 +200,4 @@ Ten tables:
 
 ## Credits
 
-Map tiles and store data © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors, available under the Open Database License. The map uses [Leaflet](https://leafletjs.com/), the charts use [Chart.js](https://www.chartjs.org/).
+Map tiles and store data © [OpenStreetMap](https://www.openstreetmap.org/copyright) contributors, available under the Open Database License. The map uses [Leaflet](https://leafletjs.com/), the charts use [Chart.js](https://www.chartjs.org/). The background photo of the login page is by [Ananthu Ganesh](https://unsplash.com/photos/shopping-cart-filled-with-items-gWzmrNBd17E) on Unsplash.

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Store without reported prices">
+  <polygon points="50.0,3.0 59.8,13.3 73.5,9.3 76.9,23.1 90.7,26.5 86.7,40.2 97.0,50.0 86.7,59.8 90.7,73.5 76.9,76.9 73.5,90.7 59.8,86.7 50.0,97.0 40.2,86.7 26.5,90.7 23.1,76.9 9.3,73.5 13.3,59.8 3.0,50.0 13.3,40.2 9.3,26.5 23.1,23.1 26.5,9.3 40.2,13.3" fill="#222222" stroke="#222222" stroke-width="4" stroke-linejoin="round"/>
+  <g fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round">
+    <circle cx="37" cy="36" r="8"/>
+    <circle cx="63" cy="64" r="8"/>
+    <line x1="67" y1="29" x2="33" y2="71"/>
+  </g>
+</svg>
