@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+    <link rel="stylesheet" href="css/products.css">
+    <link rel="stylesheet" href="css/nav.css">
+</head>
+<body>
+    <nav class="site-nav"></nav>
+
+    <h1>Products</h1>
+
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search for a product...">
+        <button id="searchButton">Search</button>
+    </div>
+
+    <div class="filters">
+        <label for="categorySelect">Select Category:</label>
+        <select id="categorySelect">
+            <option value="">All</option>
+        </select>
+
+        <label for="subcategorySelect">Select Subcategory:</label>
+        <select id="subcategorySelect">
+            <option value="">All</option>
+        </select>
+    </div>
+
+    <ul id="productList"></ul>
+
+    <script src="js/nav.js"></script>
+    <script src="js/product-list.js"></script>
+</body>
+</html>

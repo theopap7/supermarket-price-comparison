@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Price</title>
+
+    <link rel="stylesheet" href="css/add-price.css">
+    <link rel="stylesheet" href="css/nav.css">
+
+</head>
+<body>
+    <nav class="site-nav"></nav>
+
+    <div class="form">
+        <h1 class="heading">Add Price</h1>
+        <input type="number" min="0.01" step="0.01" placeholder="price" autocomplete="off" class="price" required>
+        <input type="date" placeholder="date" autocomplete="off" class="date" required>
+        <div class="select-container">
+            <select class="category" required>
+                <option value="" disabled selected>Select a category</option>
+            </select>
+            <select class="subcategory" required>
+                <option value="" disabled selected>Select a subcategory</option>
+            </select>
+            <select class="product" required>
+                <option value="" disabled selected>Select a product</option>
+            </select>
+        </div>
+        <select class="supermarket" required>
+            <option value="" disabled selected>Select a supermarket</option>
+        </select>
+        <button class="submit-btn">add price</button>
+    </div>
+    <div class="form-message"></div>
+
+    <script src="js/nav.js"></script>
+    <script src="js/add-price.js"></script>
+
+</body>
+</html>

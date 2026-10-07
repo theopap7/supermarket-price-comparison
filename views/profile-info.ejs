@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="css/profile.css">
+    <link rel="stylesheet" href="css/nav.css">
+</head>
+<body>
+    <nav class="site-nav"></nav>
+
+    <div class="content">
+        <div class="welcome-section">
+            <h2>Welcome, <%= profileData.name %>!</h2>
+        </div>
+
+        <% if (profileData.profile_photo) { %>
+            <img src="/uploads/<%= profileData.profile_photo %>" alt="Profile Photo">
+        <% } else { %>
+            <img src="/img/default-profile.svg" alt="Default Profile Photo">
+        <% } %>
+
+        <div class="profile-info">
+            <p><strong>Name:</strong> <span id="profileNameValue"><%= profileData.name %></span></p>
+            <p><strong>Email:</strong> <span id="profileEmailValue"><%= profileData.email %></span></p>
+            <p><strong>Tokens:</strong> <span id="profileTokensValue"><%= profileData.tokens %></span></p>
+        </div>
+
+        <button id="editProfileBtn">Edit Profile</button>
+    </div>
+
+    <script src="/js/nav.js"></script>
+    <script src="/js/profile-info.js"></script>
+</body>
+</html>

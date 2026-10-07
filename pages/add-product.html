@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product</title>
+    <link rel="stylesheet" href="css/add-price.css">
+    <link rel="stylesheet" href="css/nav.css">
+</head>
+<body>
+    <nav class="site-nav"></nav>
+
+    <div class="form">
+        <h1 class="heading">Add Product</h1>
+
+        <label for="productName">Product Name:</label>
+        <input type="text" id="productName" class="price" placeholder="Enter product name" maxlength="255">
+
+        <label for="category">Category:</label>
+        <select id="category" class="category">
+            <option value="">Select Category</option>
+        </select>
+
+        <label for="subcategory">Subcategory:</label>
+        <select id="subcategory" class="subcategory">
+            <option value="">Select Subcategory</option>
+        </select>
+
+        <button id="addProductBtn" class="submit-btn">Add Product</button>
+    </div>
+    <div class="form-message"></div>
+
+    <table id="productsTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+    <script src="js/nav.js"></script>
+    <script src="js/add-product.js"></script>
+</body>
+</html>

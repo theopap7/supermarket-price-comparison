@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product</title>
+    <link rel="stylesheet" href="css/edit-profile.css">
+    <link rel="stylesheet" href="css/nav.css">
+</head>
+<body>
+    <nav class="site-nav"></nav>
+
+    <h1>Edit Product</h1>
+    <form action="/update-product" method="post">
+        <input type="hidden" name="productId" value="<%= product.id %>">
+
+        <label for="name">Name (product ID <%= product.id %>):</label>
+        <input type="text" id="name" name="name" value="<%= product.name %>" maxlength="255" required>
+
+        <button type="submit">Update</button>
+        <a class="cancel-link" href="/product">Cancel</a>
+    </form>
+
+    <script src="/js/nav.js"></script>
+</body>
+</html>

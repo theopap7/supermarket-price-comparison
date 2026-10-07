@@ -1,0 +1,140 @@
+/* Reset some default styling */
+body, h1, h2, h3, p, ul, li {
+    margin: 0;
+    padding: 0;
+}
+
+/* Set a background color for the page */
+body {
+    background-color: #f5f5f5;
+    font-family: Arial, sans-serif;
+}
+
+.page-title {
+    text-align: center;
+    padding: 20px 0 0;
+}
+
+.page-message {
+    text-align: center;
+    margin-top: 10px;
+    color: #555;
+}
+
+.section-title {
+    text-align: center;
+    padding: 30px 0 0;
+    font-size: 20px;
+}
+
+/* Style for the twit container */
+.twit-container {
+    width: 600px;
+    max-width: 100%;
+    margin: 20px auto;
+}
+
+.twit-product {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.delete-button {
+    align-self: flex-start;
+    margin-top: 8px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    background-color: #cc0000;
+    color: #fff;
+}
+
+.twit button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* Style for individual twit */
+.twit {
+    background-color: #ffffff;
+    border-radius: 8px;
+    border: 1px solid #e1e8ed;
+    margin: 10px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Profile photo */
+.profile-photo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* User info */
+.user-info {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+/* Name of the user */
+.user-name {
+    margin-left: 5px;
+}
+
+/* Twit content */
+.twit-content {
+    margin-bottom: 10px;
+}
+
+/* Like and dislike buttons */
+button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+/* Display like and dislike counts */
+span {
+    margin-right: 10px;
+}
+
+/* Undo button */
+.undo-button {
+    background-color: #e1e8ed;
+    padding: 2px 5px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Like button */
+.like-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: 20px; /* Adjust the size as needed */
+    color: #00cc00; /* Color for thumbs-up */
+}
+
+/* Dislike button */
+.dislike-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: 20px; /* Adjust the size as needed */
+    color: #cc0000; /* Color for thumbs-down */
+}
+
+@media (max-width: 700px) {
+    .twit {
+        margin: 10px 12px;
+    }
+}

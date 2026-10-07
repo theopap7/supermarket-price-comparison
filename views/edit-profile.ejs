@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <link rel="stylesheet" href="css/edit-profile.css">
+    <link rel="stylesheet" href="css/nav.css">
+</head>
+<body>
+    <nav class="site-nav"></nav>
+
+    <h1>Edit Profile</h1>
+    <form id="editProfileForm">
+        <label for="editName">Name:</label>
+        <input type="text" id="editName" value="<%= profileData.name %>" required>
+
+        <label for="editEmail">Email:</label>
+        <input type="email" id="editEmail" value="<%= profileData.email %>" required>
+
+        <label for="newProfilePhoto">Upload New Profile Photo:</label>
+        <% if (profileData.profile_photo) { %>
+            <img id="profilePhotoPreview" src="/uploads/<%= profileData.profile_photo %>" alt="Profile Photo">
+        <% } else { %>
+            <img id="profilePhotoPreview" src="/img/default-profile.svg" alt="Default Profile Photo">
+        <% } %>
+        <input type="file" id="newProfilePhoto" accept="image/png, image/jpeg, image/gif">
+
+        <button type="submit">Save Changes</button>
+        <button type="button" id="cancelEditBtn">Cancel</button>
+        <p id="formMessage"></p>
+    </form>
+
+    <script src="/js/nav.js"></script>
+    <script src="/js/edit-profile.js"></script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+/* Style the body background and text */
+body {
+    background-color: #f0f0f0;
+    color: #333;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh; /* Set the height to 100% of the viewport height */
+}
+
+/* Style the header */
+h1 {
+    background-color: #2f6e5fbb;
+    color: #ffffff85;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Style the navigation links */
+ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+}
+
+li {
+    margin: 10px 0;
+}
+
+a {
+    text-decoration: none;
+    color: #333333;
+    font-weight: bold;
+}
+
+/* Style the dashboard container */
+#dashboard {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center horizontally */
+    justify-content: center; /* Center vertically */
+    text-align: center; /* Center the text inside the dashboard */
+    max-width: 400px; /* Optional: Limit the width of the dashboard */
+}
+
+/* Style the message */
+p#message {
+    font-size: 24px;
+    margin-top: 20px;
+}
+
+
+@media (max-width: 500px) {
+    h1 {
+        font-size: 24px;
+        padding: 14px;
+    }
+}

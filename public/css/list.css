@@ -1,0 +1,108 @@
+/* Reset some default styles */
+body, ul {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Style the body and center its content */
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f0f0f0;
+    padding: 20px;
+  }
+  
+  /* Style the header */
+  h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  /* Style the user list */
+  #userList {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  #userList li {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+  
+  /* Style the pagination buttons */
+  #pagination {
+    margin-top: 20px;
+  }
+
+  .page-button {
+    min-width: 40px;
+    background-color: #fff;
+    color: #007bff;
+    border: 1px solid #007bff;
+    border-radius: 4px;
+    padding: 10px 14px;
+    margin: 0 4px;
+    cursor: pointer;
+  }
+
+  .page-button:hover {
+    background-color: #e6f0ff;
+  }
+
+  .page-button.active {
+    background-color: #007bff;
+    color: #fff;
+    cursor: default;
+  }
+
+  /* Add spacing between buttons and user list */
+  #userList {
+    margin-top: 20px;
+  }
+
+  #userList {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #dateForm {
+    margin-bottom: 20px;
+  }
+
+  #dateForm input,
+  #dateForm button {
+    padding: 8px 12px;
+  }
+
+  .chart-container {
+    position: relative;
+    max-width: 900px;
+    height: 400px;
+    margin: 0 auto;
+    background-color: #fff;
+  }
+
+  @media (max-width: 700px) {
+    body {
+      padding-left: 12px;
+      padding-right: 12px;
+    }
+
+    .page-button {
+      margin: 4px 2px;
+    }
+
+    #dateForm input,
+    #dateForm button {
+      margin: 4px 0;
+    }
+
+    .chart-container {
+      height: 300px;
+    }
+  }

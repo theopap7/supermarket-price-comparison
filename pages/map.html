@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Supermarket Map</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="css/map.css">
+  <link rel="stylesheet" href="css/nav.css">
+</head>
+<body>
+    <nav class="site-nav"></nav>
+
+    <div id="map-container">
+        <div id="search-container">
+            <select id="category-select">
+                <option value="">All</option>
+            </select>
+            <input type="text" id="search-input" placeholder="Search for a supermarket...">
+            <button id="search-button">Search</button>
+        </div>
+        <div id="map"></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="js/nav.js"></script>
+    <script src="js/map.js"></script>
+</body>
+</html>
