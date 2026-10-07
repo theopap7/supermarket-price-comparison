@@ -100,6 +100,15 @@ test('only logged-in users can change a profile', async () => {
     assert.equal((await admin.post('/update-profile', { multipart: profileForm() })).status, 403);
 });
 
+test('saving a profile after the account was deleted is rejected', async () => {
+    const ghost = app.client();
+    await ghost.register('Ghost', 'ghost@example.com');
+    await app.query('DELETE FROM users WHERE email = ?', ['ghost@example.com']);
+
+    const response = await ghost.post('/update-profile', { multipart: profileForm({ name: 'Ghost', email: 'ghost@example.com' }) });
+    assert.equal(response.status, 401);
+});
+
 test('the leaderboard is sorted and paged', async () => {
     const one = await user.get('/getUsers?page=1');
     assert.equal(one.body.totalPages, 1);

@@ -27,6 +27,7 @@ module.exports = {
     EMAIL_PATTERN: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     DATE_PATTERN: /^\d{4}-\d{2}-\d{2}$/,
     PRODUCT_NAME_MAX_LENGTH: 255,
+    MAX_PRICE: 99999999.99,
 
     LOGIN_WINDOW_MS: 10 * 60 * 1000,
     LOGIN_MAX_FAILURES: 10,

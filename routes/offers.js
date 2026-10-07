@@ -3,6 +3,7 @@ const { db, withTransaction } = require('../db');
 const { handle } = require('../utils');
 const {
     DATE_PATTERN,
+    MAX_PRICE,
     TOKENS_PER_ACTION,
     REWARD_PRICE_RATIO,
     UNREALISTIC_PRICE_RATIO,
@@ -13,53 +14,69 @@ const { requireLogin, requireUser } = require('../middleware/auth');
 
 const router = express.Router();
 
-async function averageUserPrice(productId, date, days) {
-    const [[row]] = await db.query(
-        'SELECT AVG(price) AS avg_price FROM offers WHERE product_id = ? AND date < DATE(?) AND date >= DATE(?) - INTERVAL ? DAY',
-        [productId, date, date, days]
+function today() {
+    const now = new Date();
+    const pad = (value) => String(value).padStart(2, '0');
+    return `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+}
+
+// Date.parse accepts days that do not exist, like 31 February, and moves them to the next month.
+function isCalendarDate(value) {
+    const date = new Date(`${value}T00:00:00Z`);
+    return !Number.isNaN(date.getTime()) && date.toISOString().slice(0, 10) === value;
+}
+
+// The average leaves out the user's own reports, so nobody can raise it to beat it.
+async function averageUserPrice(conn, { productId, date, userId }, days) {
+    const [[row]] = await conn.query(
+        `SELECT AVG(price) AS avg_price FROM offers
+         WHERE product_id = ? AND date < DATE(?) AND date >= DATE(?) - INTERVAL ? DAY
+           AND (added_by IS NULL OR added_by <> ?)`,
+        [productId, date, date, days, userId]
     );
     return row.avg_price === null ? null : Number(row.avg_price);
 }
 
-async function referencePrice(productId, date) {
-    const [rows] = await db.query(
+async function referencePrice(conn, productId, date) {
+    const [rows] = await conn.query(
         'SELECT price FROM prices WHERE product_id = ? AND date <= DATE(?) ORDER BY date DESC LIMIT 1',
         [productId, date]
     );
     return rows.length ? Number(rows[0].price) : null;
 }
 
-async function wasRewardedToday(userId, productId, date) {
-    const [rows] = await db.query(
-        'SELECT id FROM offers WHERE added_by = ? AND product_id = ? AND date = DATE(?) AND reward_points > 0 LIMIT 1',
+// One reward per user and product, both for the day of the price and for the day it is submitted.
+async function wasRewardedToday(conn, { userId, productId, date }) {
+    const [rows] = await conn.query(
+        `SELECT id FROM offers
+         WHERE added_by = ? AND product_id = ? AND reward_points > 0
+           AND (date = DATE(?) OR DATE(created_at) = CURDATE())
+         LIMIT 1`,
         [userId, productId, date]
     );
     return rows.length > 0;
 }
 
-async function rewardFor({ price, productId, date, userId }) {
-    if (!userId) {
-        return 0;
-    }
-
+async function rewardFor(conn, report) {
+    const { price, productId, date } = report;
     const earnsReward = (comparedTo) => (
         comparedTo !== null
         && price < REWARD_PRICE_RATIO * comparedTo
         && price >= UNREALISTIC_PRICE_RATIO * comparedTo
     );
-    const dailyAverage = await averageUserPrice(productId, date, 1);
-    const weeklyAverage = await averageUserPrice(productId, date, 7);
+    const dailyAverage = await averageUserPrice(conn, report, 1);
+    const weeklyAverage = await averageUserPrice(conn, report, 7);
 
     let rewardPoints = 0;
     if (earnsReward(dailyAverage)) {
         rewardPoints = DAILY_REWARD;
     } else if (earnsReward(weeklyAverage)) {
         rewardPoints = WEEKLY_REWARD;
-    } else if (weeklyAverage === null && earnsReward(await referencePrice(productId, date))) {
+    } else if (weeklyAverage === null && earnsReward(await referencePrice(conn, productId, date))) {
         rewardPoints = WEEKLY_REWARD;
     }
 
-    if (rewardPoints > 0 && await wasRewardedToday(userId, productId, date)) {
+    if (rewardPoints > 0 && await wasRewardedToday(conn, report)) {
         return 0;
     }
     return rewardPoints;
@@ -67,18 +84,21 @@ async function rewardFor({ price, productId, date, userId }) {
 
 router.post('/addprice', requireLogin, handle(async (req, res) => {
     const { date } = req.body;
-    const price = Number(req.body.price);
+    const price = Math.round(Number(req.body.price) * 100) / 100;
     const productId = Number(req.body.product_id);
     const supermarketId = Number(req.body.supermarket_id);
 
     if (!req.body.price || !date || !req.body.product_id || !req.body.supermarket_id) {
         return res.status(400).json({ error: 'All fields must be filled.' });
     }
-    if (!Number.isFinite(price) || price <= 0) {
+    if (!Number.isFinite(price) || price <= 0 || price > MAX_PRICE) {
         return res.status(400).json({ error: 'Enter a valid price.' });
     }
-    if (!DATE_PATTERN.test(date) || Number.isNaN(Date.parse(date))) {
+    if (!DATE_PATTERN.test(date) || !isCalendarDate(date)) {
         return res.status(400).json({ error: 'Enter a valid date.' });
+    }
+    if (date > today()) {
+        return res.status(400).json({ error: 'The date cannot be in the future.' });
     }
     if (!Number.isInteger(productId) || !Number.isInteger(supermarketId)) {
         return res.status(400).json({ error: 'Select a product and a supermarket.' });
@@ -91,16 +111,24 @@ router.post('/addprice', requireLogin, handle(async (req, res) => {
     }
 
     const addedBy = req.session.userId || null;
-    const rewardPoints = await rewardFor({ price, productId, date, userId: addedBy });
 
-    await withTransaction(async (conn) => {
+    const rewardPoints = await withTransaction(async (conn) => {
+        let reward = 0;
+        if (addedBy) {
+            // Locking the user's row makes their reports wait for each other,
+            // so two requests at the same moment cannot both be rewarded.
+            await conn.query('SELECT id FROM users WHERE id = ? FOR UPDATE', [addedBy]);
+            reward = await rewardFor(conn, { price, productId, date, userId: addedBy });
+        }
+
         await conn.query(
             'INSERT INTO offers (price, date, product_id, supermarket_id, added_by, reward_points) VALUES (?, ?, ?, ?, ?, ?)',
-            [price, date, productId, supermarketId, addedBy, rewardPoints]
+            [price, date, productId, supermarketId, addedBy, reward]
         );
-        if (rewardPoints > 0) {
-            await conn.query('UPDATE users SET tokens = tokens + ? WHERE id = ?', [rewardPoints, addedBy]);
+        if (reward > 0) {
+            await conn.query('UPDATE users SET tokens = tokens + ? WHERE id = ?', [reward, addedBy]);
         }
+        return reward;
     });
 
     res.status(201).json({

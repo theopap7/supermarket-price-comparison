@@ -49,6 +49,9 @@ router.post('/update-profile', requireUser, upload.single('profilePhoto'), handl
     }
 
     const [[current]] = await db.query('SELECT profile_photo FROM users WHERE id = ?', [req.session.userId]);
+    if (!current) {
+        return res.status(401).json({ success: false, error: 'You must be logged in.' });
+    }
     try {
         await db.query(
             'UPDATE users SET name = ?, email = ?, profile_photo = ? WHERE id = ?',

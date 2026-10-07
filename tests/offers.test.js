@@ -42,7 +42,10 @@ test('adding a price validates every field', async () => {
     assert.equal((await addPrice('abc')).status, 400);
     assert.equal((await addPrice(-3)).status, 400);
     assert.equal((await addPrice(0)).status, 400);
+    assert.equal((await addPrice(0.001)).status, 400);
+    assert.equal((await addPrice(999999999999)).status, 400);
     assert.equal((await addPrice(2, { date: 'not-a-date' })).status, 400);
+    assert.equal((await addPrice(2, { date: '2026-02-31' })).status, 400);
     assert.equal((await addPrice(2, { product_id: 999999 })).status, 400);
     assert.equal((await addPrice(2, { product_id: 'abc' })).status, 400);
     assert.equal((await addPrice(2, { supermarket_id: 999999 })).status, 400);
@@ -119,6 +122,36 @@ test('a product is rewarded once per user per day', async () => {
 
     const stored = await app.query('SELECT reward_points FROM offers WHERE added_by = ? ORDER BY id', [userId]);
     assert.deepEqual(stored.map(row => row.reward_points), [20, 0, 0]);
+});
+
+test('reporting the same product for several past days is rewarded once', async () => {
+    await referencePrice(10, daysAgo(10));
+    const rewards = [];
+    for (let days = 0; days < 4; days++) {
+        rewards.push((await addPrice(7, { date: daysAgo(days) })).body.rewardPoints);
+    }
+    assert.deepEqual(rewards, [20, 0, 0, 0]);
+    assert.equal(await tokens(), 120);
+});
+
+test('a date in the future is rejected', async () => {
+    const response = await addPrice(2, { date: daysAgo(-1) });
+    assert.equal(response.status, 400);
+    assert.equal(response.body.error, 'The date cannot be in the future.');
+});
+
+test('a user\'s own prices do not count towards the average they have to beat', async () => {
+    assert.equal((await addPrice(50, { date: daysAgo(1) })).body.rewardPoints, 0);
+    assert.equal((await addPrice(39)).body.rewardPoints, 0);
+    assert.equal(await tokens(), 100);
+});
+
+test('reports sent at the same moment are rewarded once', async () => {
+    await otherUsersPrice(10, daysAgo(1));
+    const responses = await Promise.all([addPrice(7), addPrice(7), addPrice(7)]);
+    assert.deepEqual(responses.map(response => response.status), [201, 201, 201]);
+    assert.deepEqual(responses.map(response => response.body.rewardPoints).sort(), [0, 0, 50]);
+    assert.equal(await tokens(), 150);
 });
 
 test('an administrator can add a price but earns no reward', async () => {

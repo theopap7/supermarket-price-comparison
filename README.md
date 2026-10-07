@@ -37,7 +37,7 @@ A crowdsourced price-tracking web app for the supermarkets of Patras, Greece. Us
 | Another user likes your report | +5 |
 | Another user dislikes your report | -1 |
 
-A report earns a reward at most once per user, product and day, and a price below half of the value it is compared with is treated as unrealistic and earns nothing. Changing or undoing a rating reverses its effect on the author's balance.
+A report earns a reward at most once per user, product and day, counting both the day of the price and the day it was submitted, and a price below half of the value it is compared with is treated as unrealistic and earns nothing. The averages leave out your own earlier reports, and a price cannot be dated in the future. Changing or undoing a rating reverses its effect on the author's balance.
 
 On the first day of each month a pool of new tokens (80 for every registered user) is shared between the users, in proportion to what each one earned from reports and ratings during the month that just ended. Users who earned nothing get nothing from the pool.
 
@@ -145,7 +145,7 @@ You can also register a new account from the login page.
 npm test
 ```
 
-69 tests in 8 files cover authentication, sessions and page access, the catalogue and map data, adding prices and the reward rules, ratings and tokens, the monthly token distribution, profiles and photo uploads, the admin actions and the login rate limit. Each file starts the app on a free port and makes real HTTP requests.
+74 tests in 8 files cover authentication, sessions and page access, the catalogue and map data, adding prices and the reward rules, ratings and tokens, the monthly token distribution, profiles and photo uploads, the admin actions and the login rate limit. Each file starts the app on a free port and makes real HTTP requests.
 
 The tests rebuild a separate database on every run, `supermarket_test` by default (set `TEST_DB_NAME` to change it). They refuse to run if that name is the same as `DB_NAME`, so they cannot wipe the database you use for the app.
 
