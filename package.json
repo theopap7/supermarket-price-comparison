@@ -9,7 +9,7 @@
     "seed": "node db/seed.js",
     "test": "node --test --test-concurrency=1 \"tests/*.test.js\""
   },
-  "author": "",
+  "author": "Theodoros Papanikolaou",
   "engines": {
     "node": ">=22"
   },
