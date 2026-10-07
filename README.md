@@ -1,5 +1,7 @@
 # Supermarket Price Comparison
 
+[![Tests](https://github.com/theopap7/supermarket-price-comparison/actions/workflows/tests.yml/badge.svg)](https://github.com/theopap7/supermarket-price-comparison/actions/workflows/tests.yml)
+
 A crowdsourced price-tracking web app for the supermarkets of Patras, Greece. Users report the prices they see in a store, other users rate those reports, and good reports earn tokens. Built with Node.js, Express, EJS and MySQL, with a Leaflet map and Chart.js charts.
 
 ![Map of supermarkets with one store's latest prices](screenshots/map.png)
@@ -137,6 +139,19 @@ If you leave those two variables empty in `.env`, `npm run seed` picks a random 
 
 You can also register a new account from the login page.
 
+### Running with Docker instead
+
+If you have Docker, you do not need Node.js or MySQL on your machine:
+
+```bash
+docker compose up -d --build
+docker compose exec app npm run seed
+```
+
+The first command builds the app and starts it together with a MySQL 8 container. The second creates the tables and the demo data, and prints the passwords of the demo accounts. Then open `http://localhost:3001`.
+
+The database and the uploaded photos are kept in Docker volumes, so they survive a restart. `docker compose down -v` deletes them. The MySQL password and the session secret come from `DB_PASSWORD` and `SESSION_SECRET` if you set them, in a `.env` file or in your shell.
+
 ---
 
 ## Testing
@@ -148,6 +163,8 @@ npm test
 74 tests in 8 files cover authentication, sessions and page access, the catalogue and map data, adding prices and the reward rules, ratings and tokens, the monthly token distribution, profiles and photo uploads, the admin actions and the login rate limit. Each file starts the app on a free port and makes real HTTP requests.
 
 The tests rebuild a separate database on every run, `supermarket_test` by default (set `TEST_DB_NAME` to change it). They refuse to run if that name is the same as `DB_NAME`, so they cannot wipe the database you use for the app.
+
+GitHub Actions runs the same tests against a MySQL 8 service on every push, and also builds the Docker setup and checks that the app starts.
 
 ---
 
@@ -170,6 +187,9 @@ The tests rebuild a separate database on every run, `supermarket_test` by defaul
 ├── views/               EJS templates
 ├── tests/               Test files and their shared helpers
 ├── screenshots/         Images used in this README
+├── Dockerfile           Image for the app
+├── docker-compose.yml   The app together with a MySQL container
+├── .github/workflows/   Tests and Docker check that run on every push
 └── public/
     ├── css/
     ├── js/              One script per page, plus nav.js for the shared menu

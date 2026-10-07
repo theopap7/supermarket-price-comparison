@@ -1,0 +1,9 @@
+node_modules/
+.env
+.git/
+.github/
+.vscode/
+public/uploads/*
+!public/uploads/.gitkeep
+screenshots/
+tests/
